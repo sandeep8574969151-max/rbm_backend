@@ -1,13 +1,12 @@
 <?php
-$servername = "localhost"; // Yahan sirf "localhost" likhein
-$username = "root";
-$password = "";
-$dbname = "rbm_db";
+// Purana code hata dein aur ye daalein:
+$host = "yahan-cloud-host-link-daalein";
+$user = "yahan-cloud-username-daalein";
+$pass = "yahan-cloud-password-daalein";
+$dbname = "yahan-database-name-daalein";
 
-// Connection banayein
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($host, $user, $pass, $dbname);
 
-// Check karein ki connection sahi hai ya nahi
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
