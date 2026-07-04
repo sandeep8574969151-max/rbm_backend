@@ -1,11 +1,10 @@
-FROM php:8.1-apache
+FROM php:8.0-apache
 
-# mysqli extension install karein
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
-
-# Permissions aur files copy karein
-RUN chown -R www-data:www-data /var/www/html
+# Poora folder copy karein
 COPY . /var/www/html/
 
-# Index priority
-RUN echo "DirectoryIndex index.php admin.php" >> /etc/apache2/apache2.conf
+# Apache DocumentRoot ko public_html par point karein
+RUN sed -i 's|/var/www/html|/var/www/html/public_html|g' /etc/apache2/sites-available/000-default.conf
+
+# Permissions set karein
+RUN chown -R www-data:www-data /var/www/html
