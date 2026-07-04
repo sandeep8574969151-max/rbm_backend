@@ -1,4 +1,4 @@
-ROM php:8.0-cli
+FROM php:8.0-apache
 
 # Server code copy karein
 COPY . /usr/src/myapp
