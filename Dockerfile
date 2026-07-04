@@ -1,14 +1,16 @@
 FROM php:8.0-apache
 
-# Modules install aur enable karein
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libpq-dev \
-    && docker-php-ext-install pdo pdo_mysql
-
-# DocumentRoot ko public_html mein point karein
-RUN sed -i 's|/var/www/html|/var/www/html/public_html|g' /etc/apache2/sites-available/000-default.conf
-
-# Files copy karein
+# Copy all files to the Apache root
 COPY . /var/www/html/
 
-# Permissions
+# Change directory structure directly instead of using 'sed'
+# Ye command Apache ke default config ko overwrite kar degi
+RUN echo '<VirtualHost *:80>\n\
+    DocumentRoot /var/www/html/public_html\n\
+    <Directory /var/www/html/public_html>\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+
 RUN chown -R www-data:www-data /var/www/html
