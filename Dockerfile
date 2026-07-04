@@ -1,13 +1,16 @@
 FROM php:8.0-apache
 
-# Apache module conflict fix
+# Apache module fix
 RUN a2dismod mpm_event && a2enmod mpm_prefork
 
-# Files ko root mein copy karein
+# Apache ko foreground mein run karne ke liye zaroori
+RUN rm -rf /var/run/apache2/*
+
+# Files copy karein
 COPY . /var/www/html/
 
-# DocumentRoot ko root folder (/var/www/html) par hi rehne dein
-# Isliye sed command hata di hai kyunki default config pehle se hi yahan point karti hai
-
-# Permissions sahi karein
+# Permissions
 RUN chown -R www-data:www-data /var/www/html
+
+# Apache ko foreground mein chalayein (Railway ke liye zaroori)
+CMD ["apache2-foreground"]
