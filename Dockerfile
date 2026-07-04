@@ -1,13 +1,14 @@
 FROM php:8.0-apache
 
-# 1. Sabse pehle MPM (Multi-Processing Module) error fix karein
-RUN a2dismod mpm_event && a2enmod mpm_prefork
+# Modules install aur enable karein
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libpq-dev \
+    && docker-php-ext-install pdo pdo_mysql
 
-# 2. Files copy karein
-COPY . /var/www/html/
-
-# 3. Apache DocumentRoot ko public_html par set karein
+# DocumentRoot ko public_html mein point karein
 RUN sed -i 's|/var/www/html|/var/www/html/public_html|g' /etc/apache2/sites-available/000-default.conf
 
-# 4. Permissions fix karein
+# Files copy karein
+COPY . /var/www/html/
+
+# Permissions
 RUN chown -R www-data:www-data /var/www/html
