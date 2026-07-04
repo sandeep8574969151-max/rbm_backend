@@ -1,13 +1,13 @@
 FROM php:8.0-apache
 
-# Apache module conflict fix karne ke liye
+# Apache module conflict fix
 RUN a2dismod mpm_event && a2enmod mpm_prefork
 
-# Files copy karein
+# Files ko root mein copy karein
 COPY . /var/www/html/
 
-# DocumentRoot ko public_html par point karein
-RUN sed -i 's|/var/www/html|/var/www/html/public_html|g' /etc/apache2/sites-available/000-default.conf
+# DocumentRoot ko root folder (/var/www/html) par hi rehne dein
+# Isliye sed command hata di hai kyunki default config pehle se hi yahan point karti hai
 
 # Permissions sahi karein
 RUN chown -R www-data:www-data /var/www/html
