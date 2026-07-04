@@ -1,16 +1,17 @@
 FROM php:8.0-apache
 
-# Apache module fix
-RUN a2dismod mpm_event && a2enmod mpm_prefork
+# 1. Sabse pehle modules ko systematically handle karein
+RUN a2dismod mpm_event mpm_worker && \
+    a2enmod mpm_prefork
 
-# Apache ko foreground mein run karne ke liye zaroori
-RUN rm -rf /var/run/apache2/*
-
-# Files copy karein
+# 2. Files copy karein
 COPY . /var/www/html/
 
-# Permissions
+# 3. Permissions set karein
 RUN chown -R www-data:www-data /var/www/html
 
-# Apache ko foreground mein chalayein (Railway ke liye zaroori)
+# 4. ServerName warning hataayein
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# 5. Apache ko foreground mein chalayein
 CMD ["apache2-foreground"]
