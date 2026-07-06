@@ -1,4 +1,5 @@
 <?php
+ob_clean();
 // CORS Headers (Saare domains ko allow karne ke liye)
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, OPTIONS");
